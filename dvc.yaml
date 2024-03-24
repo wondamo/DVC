@@ -1,0 +1,19 @@
+stages:
+  preprocess:
+    cmd: python src/stages/preprocess.py --config=params.yaml
+    deps:
+    - src/stages/preprocess.py
+    params:
+    - data
+    outs:
+    - data/review.csv
+  data-split:
+    cmd: python src/stages/data_split.py --config=params.yaml
+    deps:
+    - src/stages/data_split.py
+    params:
+    - base
+    - data
+    outs:
+    - data/train.csv
+    - data/test.csv

@@ -17,7 +17,7 @@ def split(config_path: Text) -> None:
     data = pd.read_csv(config['data']['processed_path'])
     data.dropna(axis=0, subset=['reviewText'])
 
-    train, test = train_test_split(data, test_size=0.1, random_state=config['base']['random_state'])
+    train, test = train_test_split(data, test_size=config['data']['test_size'], random_state=config['base']['random_state'])
     train.to_csv(config['data']['train_path'], index=False)
     test.to_csv(config['data']['test_path'], index=False)
 
