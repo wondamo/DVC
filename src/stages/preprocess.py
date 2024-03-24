@@ -26,7 +26,7 @@ def process(config_path: Text) -> None:
 
     data['processed_X'] = [preprocess(sen) for sen in list(data['reviewText'])]
     data['processed_y'] = np.array(data['overall'].map({1:0, 2:0, 3:1, 4:1, 5:1}))
-    data.to_csv(config['path']['processed_path'], index=False)
+    data.to_csv(config['data']['processed_path'], index=False)
 
 
 if __name__ == "__main__":
