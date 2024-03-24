@@ -1,1 +1,3 @@
-/src/stages/__pycache__/
+src/stages/__pycache__/
+data/
+model/
