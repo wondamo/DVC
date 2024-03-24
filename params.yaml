@@ -1,0 +1,21 @@
+base:
+  random_state: 42
+  log_level: INFO
+
+data:
+  path: 'data/review.csv'
+  processed_path: 'data/processed.csv'
+  train_path: 'data/train.csv'
+  test_path: 'data/test.csv'
+
+train:
+  model_checkpoint: 'model/best_model.h5'
+  model_accuracy_path: 'reports/model_accuracy.png'
+  model_loss_path: 'reports/model_loss.png'
+  model_parameters:
+    batch_size: 64
+    epochs: 20
+    validation_split: 0.2
+
+evaluate:
+  metrics_file: 'reports/metrics.json'
