@@ -1,6 +1,4 @@
-src/stages/__pycache__/
-src/report/__pycache__/
-src/train/__pycache__/
+__pycache__
 data/
 model/
 reports/
