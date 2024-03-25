@@ -30,7 +30,7 @@ def train(config_path: Text) -> None:
     maxlen=200
     X_train = pad_sequences(X_train, padding='post', maxlen=maxlen)
     
-    model, history = train_model(X_train, y_train, maxlen, vocab_size, config)
+    model, history = train_model(X_train, y_train, vocab_size, config)
 
     plt = plot_model_accuracy(history)
     plt.savefig(config['train']['model_accuracy_path'])

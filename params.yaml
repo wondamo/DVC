@@ -10,12 +10,12 @@ data:
   test_size: 0.1
 
 train:
-  model_checkpoint: 'model/best_model.h5'
+  model_checkpoint: 'model/best_model.keras'
   model_accuracy_path: 'reports/model_accuracy.png'
   model_loss_path: 'reports/model_loss.png'
   model_parameters:
     batch_size: 64
-    epochs: 20
+    epochs: 1
     validation_split: 0.2
 
 evaluate:

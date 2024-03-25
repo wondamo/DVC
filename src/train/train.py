@@ -3,9 +3,9 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.keras import Sequential
 
 
-def compile_model(maxlen, vocab_size):
+def compile_model(vocab_size):
     model = Sequential()
-    model.add(Embedding(input_dim=vocab_size+1, output=300, input_length=maxlen, trainable=True, name="Input"))
+    model.add(Embedding(input_dim=vocab_size+1, output_dim=300, trainable=True, name="Input"))
     model.add(Dense(300, name="Dense1"))
     model.add(Dropout(rate=0.25, name="Dropout1"))
     model.add(Dense(128, name="Dense2"))
@@ -20,8 +20,8 @@ def compile_model(maxlen, vocab_size):
 
     return model
 
-def train_model(X_train, y_train, maxlen, vocab_size, config):
-    model = compile_model(maxlen, vocab_size)
+def train_model(X_train, y_train, vocab_size, config):
+    model = compile_model(vocab_size)
     model.summary()
 
     # Implement callbacks to handle overfitting
@@ -30,9 +30,9 @@ def train_model(X_train, y_train, maxlen, vocab_size, config):
 
     history = model.fit(
         X_train, y_train, 
-        batch_size=config['model_parameters']['batch_size'], 
-        epochs=config['model_parameters']['epochs'], 
-        validation_split=config['model_parameters']['validation_split'], 
+        batch_size=config['train']['model_parameters']['batch_size'], 
+        epochs=config['train']['model_parameters']['epochs'], 
+        validation_split=config['train']['model_parameters']['validation_split'], 
         callbacks=[early_stopping, model_save]
     )
 

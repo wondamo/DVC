@@ -33,7 +33,7 @@ def evaluate(config_path: Text) -> None:
     maxlen=200
     X_test = pad_sequences(X_test, padding='post', maxlen=maxlen)
     
-    model = load_model(config['model']['checkpoint'])
+    model = load_model(config['train']['model_checkpoint'])
 
     accuracy = model.evaluate(X_test, y_test)[-1]
     

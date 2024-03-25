@@ -2,14 +2,17 @@ stages:
   preprocess:
     cmd: python src/stages/preprocess.py --config=params.yaml
     deps:
+    - data/review.csv
     - src/stages/preprocess.py
     params:
     - data
     outs:
-    - data/review.csv
+    - data/processed.csv
+
   data-split:
     cmd: python src/stages/data_split.py --config=params.yaml
     deps:
+    - data/processed.csv
     - src/stages/data_split.py
     params:
     - base
@@ -17,3 +20,29 @@ stages:
     outs:
     - data/train.csv
     - data/test.csv
+
+  train:
+    cmd: python src/stages/train.py --config=params.yaml
+    deps:
+    - data/train.csv
+    - src/stages/train.py
+    params:
+    - data
+    - train
+    outs:
+    - model/best_model.h5
+    - reports/model_accuracy.png
+    - reports/model_loss.png
+
+  evaluate:
+    cmd: python src/stages/evaluate.py --config=params.yaml
+    deps:
+    - data/train.csv
+    - data/test.csv
+    - src/stages/evaluate.py
+    params:
+    - data
+    - train
+    - evaluate
+    outs:
+    - reports/metrics.json
