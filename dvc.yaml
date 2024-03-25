@@ -30,7 +30,7 @@ stages:
     - data
     - train
     outs:
-    - model/best_model.h5
+    - model/best_model.keras
     - reports/model_accuracy.png
     - reports/model_loss.png
 
