@@ -1,0 +1,135 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python src/stages/preprocess.py --config=params.yaml
+    deps:
+    - path: data/review.csv
+      hash: md5
+      md5: 1872c0a71aeb0e13a0bfa8d4c130caf8
+      size: 30235218
+    - path: src/stages/preprocess.py
+      hash: md5
+      md5: 72ce37579fe10b1cd6a8dc01b6508237
+      size: 1420
+    params:
+      params.yaml:
+        data:
+          path: data/review.csv
+          processed_path: data/processed.csv
+          train_path: data/train.csv
+          test_path: data/test.csv
+          test_size: 0.1
+    outs:
+    - path: data/processed.csv
+      hash: md5
+      md5: 09510a79720e94f614dad01f4f884273
+      size: 55234392
+  data-split:
+    cmd: python src/stages/data_split.py --config=params.yaml
+    deps:
+    - path: data/processed.csv
+      hash: md5
+      md5: 09510a79720e94f614dad01f4f884273
+      size: 55234392
+    - path: src/stages/data_split.py
+      hash: md5
+      md5: 0e09cc8ee13b10a806f4576a11785348
+      size: 1204
+    params:
+      params.yaml:
+        base:
+          random_state: 42
+          log_level: INFO
+        data:
+          path: data/review.csv
+          processed_path: data/processed.csv
+          train_path: data/train.csv
+          test_path: data/test.csv
+          test_size: 0.1
+    outs:
+    - path: data/test.csv
+      hash: md5
+      md5: 0fd26ef0d1763d8d0d43c447950607a0
+      size: 5279809
+    - path: data/train.csv
+      hash: md5
+      md5: 4eafe36407ae78e3d965428345c3fef0
+      size: 49954698
+  train:
+    cmd: python src/stages/train.py --config=params.yaml
+    deps:
+    - path: data/train.csv
+      hash: md5
+      md5: 4eafe36407ae78e3d965428345c3fef0
+      size: 49954698
+    - path: src/stages/train.py
+      hash: md5
+      md5: 7fbb363d6a087e8e1b7b9aae09ee40b5
+      size: 1855
+    params:
+      params.yaml:
+        data:
+          path: data/review.csv
+          processed_path: data/processed.csv
+          train_path: data/train.csv
+          test_path: data/test.csv
+          test_size: 0.1
+        train:
+          model_checkpoint: model/best_model.keras
+          model_accuracy_path: reports/model_accuracy.png
+          model_loss_path: reports/model_loss.png
+          model_parameters:
+            batch_size: 64
+            epochs: 1
+            validation_split: 0.2
+    outs:
+    - path: model/best_model.keras
+      hash: md5
+      md5: 42d8d12b3a4ffd13ed205312205a2376
+      size: 121935148
+    - path: reports/model_accuracy.png
+      hash: md5
+      md5: 2603169f11d852f212f2fe8be736ce93
+      size: 20008
+    - path: reports/model_loss.png
+      hash: md5
+      md5: 618d02957dc3e2a0575bc2dc0b13471c
+      size: 18536
+  evaluate:
+    cmd: python src/stages/evaluate.py --config=params.yaml
+    deps:
+    - path: data/test.csv
+      hash: md5
+      md5: 0fd26ef0d1763d8d0d43c447950607a0
+      size: 5279809
+    - path: data/train.csv
+      hash: md5
+      md5: 4eafe36407ae78e3d965428345c3fef0
+      size: 49954698
+    - path: src/stages/evaluate.py
+      hash: md5
+      md5: dbc26be2bf70492985894582aa8c1e04
+      size: 1782
+    params:
+      params.yaml:
+        data:
+          path: data/review.csv
+          processed_path: data/processed.csv
+          train_path: data/train.csv
+          test_path: data/test.csv
+          test_size: 0.1
+        evaluate:
+          metrics_file: reports/metrics.json
+        train:
+          model_checkpoint: model/best_model.keras
+          model_accuracy_path: reports/model_accuracy.png
+          model_loss_path: reports/model_loss.png
+          model_parameters:
+            batch_size: 64
+            epochs: 1
+            validation_split: 0.2
+    outs:
+    - path: reports/metrics.json
+      hash: md5
+      md5: ab9ecf74fa17ceed8b168b656e7cb3d4
+      size: 32
